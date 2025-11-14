@@ -1,0 +1,14 @@
+tensorflow==2.16.1 
+tensorflow-metal==1.1.0 
+opencv-python==4.9.0.80 
+matplotlib 
+numpy==1.26.4
+
+flask==3.0.0 
+flask-cors==4.0.0
+
+pillow==10.2.0
+scikit-learn==1.4.0 
+
+pandas==2.2.0
+requests==2.31.0
