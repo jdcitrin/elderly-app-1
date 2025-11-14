@@ -4,7 +4,8 @@ import os
 from matplotlib import pyplot as plt
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dense, Flatten, Dropout
-from tensorflow.keras.metrics import Precision, Recall, BinaryAccuracy
+from tensorflow.keras.metrics import Precision, Recall, CategoricalAccuracy
+from tensorflow.keras.applications import MobileNetV2
 import numpy as np
 
 
@@ -41,4 +42,61 @@ print(train_size)
 print(val_size)
 print(test_size)
 """
+
+train = data.take(train_size)
+train = train.map(augment)
+val = data.skip(train_size).take(val_size)
+test = data.skip(train_size+val_size).take(test_size)
+
+model_path = 'models/fruit_class.h5'
+
+if os.path.exists(model_path):
+    model = tf.keras.models.load_model(model_path)
+else:
+    num_classes = len(class_names)
+    
+    #lightweight pre trained model
+    base_model = MobileNetV2(input_shape=(256, 256, 3),
+                             include_top=False,
+                             #uses google trained dataset
+                             weights='imagenet')
+    base_model.trainable = False  
+    
+
+    #all layers of training on top of the mobilenet
+    model = Sequential([
+        base_model,
+        tf.keras.layers.GlobalAveragePooling2D(),
+        Dropout(0.5),
+        Dense(128, activation='relu'),
+        Dropout(0.3),
+        Dense(num_classes, activation='softmax')
+    ])
+    #optimizes models learning
+    model.compile('adam', 
+                  loss=tf.losses.SparseCategoricalCrossentropy(), 
+                  metrics=['accuracy'])
+
+    ldir = 'logs/fruits'
+    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=ldir)
+    #early stopping important to prevent overfitting
+    early_stopping = tf.keras.callbacks.EarlyStopping(
+        monitor='val_loss', 
+        patience=5, 
+        restore_best_weights=True
+    )
+    #actual training of model
+    hist = model.fit(
+        train, 
+        epochs=50, 
+        validation_data=val, 
+        callbacks=[tensorboard_callback, early_stopping]
+    )
+    #saves model
+    os.makedirs('models', exist_ok=True)
+    model.save(model_path)
+
+    print(f"accuracy: {hist.history['accuracy'][-1]*100:.2f}%")
+    print(f"val acc: {hist.history['val_accuracy'][-1]*100:.2f}%")
+
 
