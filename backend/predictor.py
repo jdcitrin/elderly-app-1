@@ -22,4 +22,17 @@ class Model:
 
     def load_models(self):
 
+        for category in self.categories.keys():
+            #finds path to trained model
+            model_path = f'../models/{category}_class.h5'
+
+            try:
+                #loads model through tf
+                self.models[category] = tf.keras.model.load_model(model_path)
+                self.class_names[category] = self.categroies[category]
+                print(f"loaded {category} model")
+            except:
+                print(f"not loaded {category} model")
         
+        print(f"loaded {len(self.models)} models")
+
