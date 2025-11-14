@@ -100,3 +100,32 @@ else:
     print(f"val acc: {hist.history['val_accuracy'][-1]*100:.2f}%")
 
 
+print("test")
+test_loss, test_accuracy = model.evaluate(test, verbose=0)
+print(f"\ntest accuracy: {test_accuracy*100:.2f}%")
+print(f"loss: {test_loss:.4f}")
+
+# Test individual fruit image
+test_image_path = 'test/mangotest.webp'  # Use real path
+img = cv2.imread(test_image_path)
+
+
+if img is not None:
+    resize = tf.image.resize(img, (256, 256))
+    yhat = model.predict(np.expand_dims(resize/255, 0), verbose=0)
+    
+    predicted_idx = np.argmax(yhat[0])
+    confidence = yhat[0][predicted_idx]
+    
+    # Display
+    plt.figure(figsize=(6, 6))
+    plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+    plt.title(f"predicted fruit: {class_names[predicted_idx]} ({confidence*100:.1f}%)")
+    plt.axis('off')
+    plt.show()
+    
+    print(f"\nprediction: {class_names[predicted_idx]}")
+    print(f"conf: {confidence*100:.2f}%")
+    print(f"\nprobs:")
+    for i, name in enumerate(class_names):
+        print(f"{name:10}: {yhat[0][i]*100:.1f}%")
