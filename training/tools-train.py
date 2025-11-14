@@ -106,7 +106,7 @@ print(f"\ntest accuracy: {test_accuracy*100:.2f}%")
 print(f"loss: {test_loss:.4f}")
 
 # Test individual tool image
-test_image_path = 'test/mangotest.webp'  # Use real path
+test_image_path = 'test/sdrivertest.jpg'  # Use real path
 img = cv2.imread(test_image_path)
 
 
