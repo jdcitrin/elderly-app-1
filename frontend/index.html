@@ -716,6 +716,20 @@
 
         // Display results
         function displayResult(result) {
+            const MIN_CONF = 0.60
+
+            if (result.confidence < MIN_CONF) {
+                showError(`Low confidence (${result.confidence_percent}). Please try again with better lighting or a clearer view. Prediction is still shown below.`);
+                document.getElementById('camera-section').style.display = 'block';
+                if (SPEAK_ENABLED) {
+                   setTimeout(() => {
+                        speak("I'm not very sure. Please try again with better lighting. Prediction is still shown below.");
+                    }, 500); //500ms
+                }
+                
+            }
+
+         
             document.getElementById('loading').style.display = 'none';
             document.getElementById('result-section').style.display = 'block';
             
