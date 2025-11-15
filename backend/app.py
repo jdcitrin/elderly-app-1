@@ -69,12 +69,12 @@ if __name__ == '__main__':
     print("starting....")
     print("------------------------------")
     print(f"categories : {list(predictor.models.keys())}")
-    print("\nhttp://localhost:3000")
+    print("\nhttp://localhost:5000")
     print("------------------------------")
     
     # start
     app.run(
         debug=True,      # Show errors in terminal
         host='0.0.0.0',  # Allow external connections
-        port=3000        # Run on port 5000
+        port=5000        # Run on port 3000
     )
