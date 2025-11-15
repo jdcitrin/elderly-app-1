@@ -87,7 +87,7 @@ class Model:
                         'predicted_class': pred_class,
                         'confidence': confidence,
                         'confidence_percent': f"{confidence * 100:.1f}%", 
-                        #'all_predictions': all_predict
+                        'all_predictions': all_predict
                     }
         
         except Exception as e:
