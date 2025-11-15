@@ -36,3 +36,55 @@ class Model:
         
         print(f"loaded {len(self.models)} models")
 
+def image_processing(self, image_bytes):
+    #opens image from raw bytes
+    image = Image.open(io.BytesIO(image_bytes))
+
+    #must be rgb for processing
+    if image.mode != 'RGB':
+        image = image.convert('RGB')
+
+    #must be 256 for processing
+    image = image.resize(256,256)
+    
+    image_array = np.array(image)
+    image_array = image_array/255.0
+
+    image_array = np.expand_dims(image_array, axis = 0)
+
+    #returns processed image
+    return image_array
+
+def predict(self, image_bytes, category):
+    
+    if category not in self.models:
+        return { 'success': False, 'error' : f'category {category} not found'}
+    try: 
+        processed = self.image_processing(image_bytes)
+        model = self.models[category]
+        prediction = model.predict(processed, verbose = 0)
+
+        #removes unnecessary batch dimensions, finds index with ighest number
+        predict_perc = np.argmax(prediction[0])
+        #percentage that it is the right value
+        confidence = float(prediction[0][predict_perc])
+        #class which mathces index with highest confidence
+        pred_class = self.class_names[category][predict_perc]
+
+        all_predict = {}
+        for idx, class_name in enumerate(self.class_names[category]):
+            all_predict[class_name] = float(prediction[0][idx])
+
+        return {
+                    'success': True,
+                    'category': category,
+                    'predicted_class': pred_class,
+                    'confidence': confidence,
+                    'confidence_percent': f"{confidence * 100:.1f}%", 
+                    'all_predictions': all_predict
+                }
+    except Exception as e:
+         return {
+                'success': False,
+                'error': str(e)
+            }
