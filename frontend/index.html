@@ -155,21 +155,27 @@
             background-clip: text;
         }
 
+        .video-wrapper {
+            display: inline-block;
+            padding: 8px;  
+            border-radius: 30px; 
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin: 30px auto;
+        }
+
+        
         #video {
             width: 100%;
             max-width: 750px;
-            border-radius: 25px;
-            margin: 30px auto;
+            border-radius: 24px;  
             display: block;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            border: 5px solid;
-            border-image: linear-gradient(135deg, #667eea, #764ba2) 1;
             transform: perspective(1000px);
             transition: transform 0.3s ease;
         }
 
         #video:hover {
-            transform: perspective(1000px) scale(1.02);
+            transform: perspective(1000px) scale(1.005);
         }
 
         #canvas {
@@ -582,7 +588,9 @@
         <!-- Camera Section -->
         <div id="camera-section">
             <h2 id="category-title">Point Camera at Object</h2>
-            <video id="video" autoplay playsinline></video>
+            <div class="video-wrapper">
+                <video id="video" autoplay playsinline></video>
+            </div>
             <canvas id="canvas"></canvas>
             <div class="button-group">
                 <button class="action-btn" onclick="captureImage()">
