@@ -4,6 +4,8 @@ to enter virtual environment: source venv/bin/activate
 
 to get necessary addons: pip install -r requirements.txt
 
+to run type cd into backend and 
+
 
 DATASETS USED:
 

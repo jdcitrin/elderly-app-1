@@ -4,9 +4,8 @@ from flask_cors import CORS
 from predictor import Model
 
 #create flask app
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../frontend', static_url_path='')
 
-#connects future frontend
 CORS(app)
 
 
@@ -17,16 +16,15 @@ predictor = Model()
 
 
 
-#whenever get does /, run func below
 @app.route('/')
 def home():
-    
-    #returns json object to confirm running
-    #health status
+    return app.send_static_file('index.html')
+
+@app.route('/health')
+def health():
     return jsonify({
         'status': 'running',
         'message': 'backend active',
-        #lists out workig categories
         'available_categories': list(predictor.models.keys())
     })
 
@@ -69,12 +67,12 @@ if __name__ == '__main__':
     print("starting....")
     print("------------------------------")
     print(f"categories : {list(predictor.models.keys())}")
-    print("\nhttp://localhost:5000")
+    print("\nhttp://localhost:3000")
     print("------------------------------")
-    
+
     # start
     app.run(
-        debug=True,      # Show errors in terminal
-        host='0.0.0.0',  # Allow external connections
-        port=5000        # Run on port 3000
+        debug=True,
+        host='0.0.0.0',
+        port=3000
     )
