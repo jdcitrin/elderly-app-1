@@ -13,3 +13,6 @@ fruits: https://www.kaggle.com/datasets/shreyapmaher/fruits-dataset-images
 utensils: https://www.kaggle.com/datasets/jehanbhathena/utensil-image-recognition
 pets: https://www.kaggle.com/datasets/iamsouravbanerjee/animal-image-dataset-90-different-animals
 tools: https://www.kaggle.com/datasets/salmaneunus/mechanical-tools-dataset
+
+
+Although I designed the model myself, I utilized claude code to help design the ui/ux, as I want to focus on optimizing the model,and improving on the openCV capabilities. 
